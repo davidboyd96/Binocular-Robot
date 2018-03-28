@@ -1,0 +1,17 @@
+<launch>
+	<!-- Parameters -->
+	<param name="test_images_location" value="$(find project)/test_images/" />
+
+        <!-- ROS Serial Node -->
+	<node pkg="rosserial_python" type="serial_node.py" name="ArduinoConnection" args="/dev/ttyACM0"></node>
+
+	<!-- Gimbal Control -->
+	<node pkg="project" type="gimbal_control.py" name="GimbalControl"></node>
+
+	<!-- Load Test Images -->
+	<node pkg="project" type="test_images.py" name="testImages" output="screen"></node>
+
+	<!-- Create Disparity -->
+	<node pkg="project" type="createDisparityMap.py" name="createDisparity" output="screen"></node>
+
+</launch>

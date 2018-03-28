@@ -1,0 +1,18 @@
+<launch>
+	<!-- Parameters -->
+	<param name="WIDTH" value="1920" />
+	<param name="HEIGHT" value="1080" />
+	<param name="model_location" value="$(find project)/model/" />
+        <!-- ROS Serial Node -->
+	<node pkg="rosserial_python" type="serial_node.py" name="ArduinoConnection" args="/dev/ttyACM0"></node>
+
+	<!-- Gimbal Control -->
+	<node pkg="project" type="gimbal_control.py" name="GimbalControl"></node>
+
+	<!-- Capture Images -->
+	<node pkg="project" type="captureImages.py" name="captureImages"></node>
+
+	<!-- Object Recognition -->
+	<node pkg="project" type="objectRecognition.py" name="objectRecogniser"></node>
+
+</launch>
