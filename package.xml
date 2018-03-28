@@ -34,5 +34,6 @@
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>python-tensorflow-pip</exec_depend>
+  <test_depend>rosunit</test_depend>
 
 </package>

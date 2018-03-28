@@ -44,3 +44,5 @@ def convert_imgmsg_to_cv_images(message, image_formats, success_string, error_st
         traceback.print_exc()
         rospy.logerr(error_string)
     return False, [], left_fundamental_matrix
+
+

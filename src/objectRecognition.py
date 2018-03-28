@@ -9,7 +9,9 @@ import cv2
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 from utils import try_to_publish, convert_imgmsg_to_cv_images
-from project.msg import ImageArray
+from project.msg import ImageArray, Objects
+from std_msgs.msg import Float64MultiArray
+from std_msgs.msg import MultiArrayDimension
 os.environ['TF_CPP_MIN_VLOG_LEVEL'] = '5'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '5'
 import tensorflow as tf
@@ -19,6 +21,7 @@ tf.logging.set_verbosity(5)
 
 rospy.init_node("objectRecognition")
 MODEL_LOCATION = rospy.get_param("/model_location")
+objects_publisher = rospy.Publisher("objects", Objects, queue_size = 1)
 
 HEIGHT =  rospy.get_param("/HEIGHT")
 WIDTH = rospy.get_param("/WIDTH")
@@ -137,14 +140,26 @@ def callback(imgmsg):
         rospy.logerr("Error with converting ImageArray message to OpenCV images so object recognition returned")
         return
 
-    #Compute disparity
+    #Detect objects
     retval, left_obj_coord, left_obj_class, right_obj_coord, right_obj_class= recognise_objects(image_left, image_right)
 
-    #Publish the left disparity map
+    #Publish the object data
     if(retval):
-        print "success"
-        #try_to_publish(left_disparity_publisher, images, image_formats, PUB_SUCCESS_STRING, PUB_ERROR_STRING)
+        try:
+            a = np.array(left_obj_coord)
+            b = np.array(right_obj_coord)
 
+            msg = Objects()
+            msg.left_coords = a.flatten()
+            msg.left_class = left_obj_class
+            msg.right_coords = b.flatten()
+            msg.right_class = right_obj_class
+            objects_publisher.publish(msg)
+            rospy.loginfo("Objects have been published")
+        except Exception as e:
+            print e
+            traceback.print_exc()
+            rospy.logerr("Error publishing objects")
 
 if __name__ == "__main__":
 

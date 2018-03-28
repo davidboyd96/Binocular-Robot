@@ -13,6 +13,6 @@
 	<node pkg="project" type="captureImages.py" name="captureImages"></node>
 
 	<!-- Object Recognition -->
-	<node pkg="project" type="objectRecognition.py" name="objectRecogniser"></node>
+	<node pkg="project" type="objectRecognition.py" name="objectRecogniser" ></node>
 
 </launch>

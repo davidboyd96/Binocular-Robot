@@ -54,6 +54,7 @@ find_package(OpenCV REQUIRED)
  add_message_files(
    FILES
    ImageArray.msg
+   Objects.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -112,6 +113,7 @@ catkin_package(
   CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs cv_bridge message_runtime
   #DEPENDS system_lib
 )
+catkin_add_nosetests(src/test.py)
 
 ###########
 ## Build ##
